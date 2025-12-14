@@ -30,6 +30,7 @@
     flex-direction: column;
     gap: 15px;
     padding: 10px;
+    
 }
 
 button {
@@ -161,6 +162,16 @@ fieldset {
     border-radius: 15px;
 }
 
+.subtask-item-container {
+    display: flex;
+    width: 100%;
+}
+
+.subtask-input {
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
 .subtask-item .img-icon {
     background-color: red;
     width: 25px;
@@ -178,7 +189,17 @@ fieldset {
     border-bottom-right-radius: 15px;
 }
 
+.card-collapse-btn:hover {
+    filter: brightness(120%)
+}
+
 .card-collapse-btn > .img-icon {
     background-color: none;
     border: none;
+}
+
+.rotated {
+    transform: rotate(0deg);
+    /* Add smooth transition */
+    transition: transform 0.2s ease-in-out;
 }

@@ -1,4 +1,4 @@
-import "./style.css";
-import { TodoItem } from "./todo-item.js"
+import { TodoItemDomElement } from "./todo-item/script.js"
 
-console.log("hello world")
+const test = new TodoItemDomElement()
+test.appendTo(document.querySelector("body"))
