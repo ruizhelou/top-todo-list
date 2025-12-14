@@ -1,16 +1,26 @@
 import "./style.css";
 import incompleteIcon from "../icons/incomplete.svg"
+import checkIcon from "../icons/check.svg"
 import binIcon from "../icons/bin.svg"
 import addIcon from "../icons/add-symbol.svg"
 import minusIcon from "../icons/minus-symbol.svg"
 import expandUpIcon from "../icons/expand-up.svg"
 
 class TodoItem {
+    #checked = false
     #title
     #description
     #dueDate
     #priority
     #subtasks = []
+
+    get checked() {
+        return this.#checked
+    }
+
+    set checked(checked) {
+        this.#checked = checked
+    }
     
     get title() {
         return this.#title
@@ -90,6 +100,8 @@ class TodoItemDomElement {
     #subtaskFieldset
 
     #checkButton
+    #checkButtonIcon
+
     #deleteButton
 
     #collapseButton
@@ -116,13 +128,21 @@ class TodoItemDomElement {
 
         this.#checkButton = document.createElement("button")
         this.#checkButton.classList.add("card-complete-btn")
+        this.#checkButton.addEventListener("click", event => {
+            this.#todoItem.checked = !this.#todoItem.checked
+            if(this.#todoItem.checked) {
+                this.checkTodoItem()
+            } else {
+                this.uncheckTodoItem()
+            }
+        })
         headerLeft.appendChild(this.#checkButton)
 
-        const cardCompleteBtnIcon = document.createElement("img")
-        cardCompleteBtnIcon.classList.add("img-icon")
-        cardCompleteBtnIcon.src=incompleteIcon
-        cardCompleteBtnIcon.alt="Complete button"
-        this.#checkButton.appendChild(cardCompleteBtnIcon)
+        this.#checkButtonIcon = document.createElement("img")
+        this.#checkButtonIcon.classList.add("img-icon")
+        this.#checkButtonIcon.src=incompleteIcon
+        this.#checkButtonIcon.alt="Complete button"
+        this.#checkButton.appendChild(this.#checkButtonIcon)
 
         const cardTitle = document.createElement("textarea")
         cardTitle.id = "card-title"
@@ -137,6 +157,10 @@ class TodoItemDomElement {
 
         this.#deleteButton = document.createElement("button")
         this.#deleteButton.classList.add("card-delete-btn")
+        this.#deleteButton.addEventListener("click", event => {
+            const parentNode = this.#rootContainer.parentNode
+            parentNode.removeChild(this.#rootContainer)
+        })
         headerRight.appendChild(this.#deleteButton)
 
         const cardDeleteBtnIcon = document.createElement("img")
@@ -212,6 +236,16 @@ class TodoItemDomElement {
         this.#cardCollapseButtonIcon.alt = "Expand card button"
         this.#cardCollapseButtonIcon.classList.add("img-icon", "rotated")
         this.#collapseButton.appendChild(this.#cardCollapseButtonIcon)
+    }
+
+    checkTodoItem() {
+        this.#checkButtonIcon.src = checkIcon
+        this.#checkButtonIcon.style.backgroundColor = "lightgreen"
+    }
+
+    uncheckTodoItem() {
+        this.#checkButtonIcon.src = incompleteIcon
+        this.#checkButtonIcon.style.backgroundColor = "SkyBlue"
     }
 
     collapse() {

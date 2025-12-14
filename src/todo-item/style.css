@@ -104,11 +104,15 @@ textarea:hover {
 }
 
 .card-complete-btn > .img-icon {
-    background-color: SkyBlue;
+    background-color: skyblue;
 }
 
 #card-title {
     margin: 0px 10px;
+}
+
+.fade-img {
+  transition: opacity 0.5s ease-in-out;
 }
 
 /* =================== DESCRIPTION =================== */
