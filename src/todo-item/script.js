@@ -20,6 +20,10 @@ class Task {
         this.#id = crypto.randomUUID()
     }
 
+    get id() {
+        return this.#id;
+    }
+
     get checked() {
         return this.#checked
     }

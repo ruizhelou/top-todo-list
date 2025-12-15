@@ -3,9 +3,18 @@ import binIcon from "../icons/bin.svg"
 import addIcon from "../icons/add-symbol.svg"
 import { TaskDomElement } from "../todo-item/script.js"
 
-class TodoProject {
+class Project {
+    #id
     #title
     #tasks = []
+
+    constructor() {
+        this.#id = crypto.randomUUID();
+    }
+
+    get id() {
+        return this.#id
+    }
 
     get title() {
         return this.#title
@@ -25,7 +34,7 @@ class ProjectDomElement {
     #projectBody
 
     constructor() {
-        this.#todoProject = new TodoProject()
+        this.#todoProject = new Project()
 
         this.#rootContainer = document.createElement("div")
         this.#rootContainer.classList.add("project")

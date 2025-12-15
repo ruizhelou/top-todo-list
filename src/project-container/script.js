@@ -8,6 +8,10 @@ class ProjectContainer {
     addProject(project) {
         this.#projects.push(project)
     }
+
+    get projects() {
+        return this.#projects
+    }
 }
 
 class ProjectContainerDomElement {
