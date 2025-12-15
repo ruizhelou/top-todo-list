@@ -1,6 +1,7 @@
 import "./style.css";
 import binIcon from "../icons/bin.svg"
 import addIcon from "../icons/add-symbol.svg"
+import { TodoItemDomElement } from "../todo-item/script.js"
 
 class TodoProject {
     #title
@@ -37,10 +38,15 @@ class TodoProjectDomElement {
         projectTitle.name = "project-title"
         projectTitle.id = "project-title"
         projectTitle.placeholder = "Project title..."
+        projectTitle.addEventListener("input", event => this.#todoProject.title = event.target.value)
         projectHeader.appendChild(projectTitle)
 
         const deleteButton = document.createElement("button")
         deleteButton.classList.add("delete-btn")
+        deleteButton.addEventListener("click", event => {
+            const parentNode = this.#rootContainer.parentNode
+            parentNode.removeChild(this.#rootContainer)
+        })
         projectHeader.appendChild(deleteButton)
 
         const deleteButtonIcon = document.createElement("img")
@@ -59,6 +65,11 @@ class TodoProjectDomElement {
 
         const addTodoItemButton = document.createElement("button")
         addTodoItemButton.classList.add("add-todo-item-btn")
+        addTodoItemButton.addEventListener("click", event => {
+            const todoItemDomElement = new TodoItemDomElement()
+            todoItemDomElement.appendTo(this.#projectBody)
+            this.#todoProject.addTodoItem(todoItemDomElement.todoItem)
+        })
         projectFooter.appendChild(addTodoItemButton)
 
         const addTodoItemButtonIcon = document.createElement("img")
@@ -70,10 +81,6 @@ class TodoProjectDomElement {
 
     appendTo(domElement) {
         domElement.appendChild(this.#rootContainer)
-    }
-
-    addTask(task) {
-        this.#projectBody.appendChild(task)
     }
 }
 
