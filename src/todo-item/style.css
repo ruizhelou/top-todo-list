@@ -29,7 +29,7 @@
     flex-direction: column;
     width: 340px;
     word-break: break-all;
-    background-color: var(--charcoal-dark);
+    background-color: var(--charcoal-light);
     border-radius: 15px;
 }
 
@@ -92,6 +92,7 @@ textarea:hover {
     display: flex;
     justify-content: end;
     align-items: center;
+    gap: var(--content-padding)
 }
 
 .header-left {
@@ -101,13 +102,17 @@ textarea:hover {
     width: 100%;
 }
 
-.card-delete-btn {
+.btn-widget {
     margin-left: auto;
     border-radius: 50%;
 }
 
-.card-delete-btn > .img-icon {
+.delete-btn > .img-icon {
     background-color: red;
+}
+
+.priority-btn > .img-icon {
+    background-color: darkgray;
 }
 
 .card-complete-btn > .img-icon {
@@ -169,7 +174,7 @@ fieldset {
     align-items: center;
     justify-content: space-between;
 
-    background-color: lightgray;
+    background-color: var(--charcoal-light);
     padding: var(--content-padding);
     border-radius: 15px;
 }
@@ -196,7 +201,7 @@ fieldset {
 /* =================== OUTSIDE CONTAINER =================== */
 
 .card-collapse-btn {
-    background-color: var(--charcoal-light);
+    background-color: var(--charcoal-dark);
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
     padding: 2px;

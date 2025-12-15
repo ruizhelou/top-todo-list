@@ -1,6 +1,7 @@
 import "./style.css";
 import incompleteIcon from "../icons/incomplete.svg"
 import checkIcon from "../icons/check.svg"
+import priorityIcon from "../icons/exclamation-mark.svg"
 import binIcon from "../icons/bin.svg"
 import addIcon from "../icons/add-symbol.svg"
 import minusIcon from "../icons/minus-symbol.svg"
@@ -48,6 +49,17 @@ class TodoItem {
     }
     set priority(priority) {
         this.#priority = priority
+    }
+    incrementPriority() {
+        if(this.#priority === undefined) {
+            this.#priority = 'low'
+        } else if(this.#priority === 'low') {
+            this.#priority = 'mid'
+        } else if(this.#priority === 'mid') {
+            this.#priority = 'high'
+        } else {
+            this.#priority = undefined
+        }
     }
 
     addSubtask(subtask) {
@@ -102,8 +114,6 @@ class TodoItemDomElement {
     #checkButton
     #checkButtonIcon
 
-    #deleteButton
-
     #collapseButton
     #cardCollapseButtonIcon
     #isCollapsed = false
@@ -155,19 +165,41 @@ class TodoItemDomElement {
         headerRight.classList.add("header-right")
         cardHeader.appendChild(headerRight)
 
-        this.#deleteButton = document.createElement("button")
-        this.#deleteButton.classList.add("card-delete-btn")
-        this.#deleteButton.addEventListener("click", event => {
+        const priorityButton = document.createElement("button")
+        priorityButton.classList.add("btn-widget", "priority-btn")
+        headerRight.appendChild(priorityButton)
+
+        const priorityButtonIcon = document.createElement("img")
+        priorityButtonIcon.classList.add("img-icon")
+        priorityButtonIcon.src = priorityIcon
+        priorityButtonIcon.alt = "Priority button"
+        priorityButton.appendChild(priorityButtonIcon)
+        priorityButton.addEventListener("click", event => {
+            this.#todoItem.incrementPriority()
+            if(this.#todoItem.priority === undefined) {
+                priorityButtonIcon.style.backgroundColor = 'darkgray'
+            } else if (this.#todoItem.priority === 'low') {
+                priorityButtonIcon.style.backgroundColor = 'gold'
+            } else if (this.#todoItem.priority === 'mid') {
+                priorityButtonIcon.style.backgroundColor = 'orange'
+            } else if (this.#todoItem.priority === 'high') {
+                priorityButtonIcon.style.backgroundColor = 'red'
+            }
+        })
+
+        const deleteButton = document.createElement("button")
+        deleteButton.classList.add("btn-widget", "delete-btn")
+        deleteButton.addEventListener("click", event => {
             const parentNode = this.#rootContainer.parentNode
             parentNode.removeChild(this.#rootContainer)
         })
-        headerRight.appendChild(this.#deleteButton)
+        headerRight.appendChild(deleteButton)
 
         const cardDeleteBtnIcon = document.createElement("img")
         cardDeleteBtnIcon.classList.add("img-icon")
         cardDeleteBtnIcon.src = binIcon
         cardDeleteBtnIcon.alt = "Bin button"
-        this.#deleteButton.appendChild(cardDeleteBtnIcon)
+        deleteButton.appendChild(cardDeleteBtnIcon)
 
         this.#cardDescription = document.createElement("textarea")
         this.#cardDescription.id = "card-description"
