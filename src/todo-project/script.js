@@ -26,6 +26,9 @@ class Project {
     addTask(task) {
         this.#tasks.push(task)
     }
+    removeTask(taskId) {
+        this.#tasks = this.#tasks.filter(task => task.id !== taskId);
+    }
 }
 
 class ProjectDomElement {

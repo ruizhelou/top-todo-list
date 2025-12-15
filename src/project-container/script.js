@@ -8,9 +8,13 @@ class ProjectContainer {
     addProject(project) {
         this.#projects.push(project)
     }
+    removeProject(projectId) {
+        this.#projects = this.#projects.filter(project => project.id !== projectId);
+    }
 
-    get projects() {
-        return this.#projects
+    // For debugging
+    logProjects() {
+        console.log(this.#projects)
     }
 }
 

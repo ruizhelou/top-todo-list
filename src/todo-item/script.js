@@ -77,9 +77,6 @@ class Task {
     removeSubtask(subtaskId) {
         this.#subtasks = this.#subtasks.filter(subtask => subtask.id !== subtaskId);
     }
-    get subtasksLength() {
-        return this.#subtasks.length
-    }
 }
 
 class Subtask {
@@ -317,19 +314,19 @@ class TaskDomElement {
 
         const subtaskCheckbox = document.createElement("input")
         subtaskCheckbox.type = "checkbox"
-        subtaskCheckbox.id = "subtaskCheckbox" + this.#task.subtasksLength
-        subtaskCheckbox.name = "subtaskCheckbox" + this.#task.subtasksLength
+        subtaskCheckbox.id = "subtaskCheckbox" + subtask.id
+        subtaskCheckbox.name = "subtaskCheckbox" + subtask.id
         subtaskCheckbox.addEventListener("change", event => subtask.toggleChecked())
         subtaskItemContainer.appendChild(subtaskCheckbox)
 
         const subtaskLabel = document.createElement("label")
-        subtaskLabel.setAttribute("for", "subtaskCheckbox" + this.#task.subtasksLength)
+        subtaskLabel.setAttribute("for", "subtaskCheckbox" + subtask.id)
         subtaskItemContainer.appendChild(subtaskLabel)
 
         const subtaskInput = document.createElement("textarea")
         subtaskInput.classList.add("subtask-input")
-        subtaskInput.id = "subtaskTextarea" + this.#task.subtasksLength
-        subtaskInput.name = "subtaskTextarea" + this.#task.subtasksLength
+        subtaskInput.id = "subtaskTextarea" + subtask.id
+        subtaskInput.name = "subtaskTextarea" + subtask.id
         subtaskInput.placeholder = "Subtask..."
         subtaskInput.addEventListener("input", event => subtask.textContent = event.target.value)
         subtaskItemContainer.appendChild(subtaskInput)
