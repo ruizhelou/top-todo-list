@@ -122,7 +122,7 @@ class TodoItemDomElement {
         this.#todoItem = new TodoItem();
 
         this.#rootContainer = document.createElement("div")
-        this.#rootContainer.classList.add("container")
+        this.#rootContainer.classList.add("todo-item-container")
 
         this.#todoItemCard = document.createElement("div")
         this.#todoItemCard.classList.add("todo-item-card")
@@ -342,6 +342,10 @@ class TodoItemDomElement {
 
     appendTo(domElement) {
         domElement.appendChild(this.#rootContainer)
+    }
+
+    get rootContainer() {
+        return this.#rootContainer
     }
 }
 

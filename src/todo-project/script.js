@@ -1,0 +1,80 @@
+import "./style.css";
+import binIcon from "../icons/bin.svg"
+import addIcon from "../icons/add-symbol.svg"
+
+class TodoProject {
+    #title
+    #todoItems = []
+
+    get title() {
+        return this.#title
+    }
+    set title(title) {
+        this.#title = title
+    }
+
+    addTodoItem(todoItem) {
+        this.#todoItems.push(todoItem)
+    }
+}
+
+class TodoProjectDomElement {
+    #todoProject
+    #rootContainer
+    #projectBody
+
+    constructor() {
+        this.#todoProject = new TodoProject()
+
+        this.#rootContainer = document.createElement("div")
+        this.#rootContainer.classList.add("project")
+
+        const projectHeader = document.createElement("div")
+        projectHeader.classList.add("project-header")
+        this.#rootContainer.appendChild(projectHeader)
+
+        const projectTitle = document.createElement("textarea")
+        projectTitle.name = "project-title"
+        projectTitle.id = "project-title"
+        projectTitle.placeholder = "Project title..."
+        projectHeader.appendChild(projectTitle)
+
+        const deleteButton = document.createElement("button")
+        deleteButton.classList.add("delete-btn")
+        projectHeader.appendChild(deleteButton)
+
+        const deleteButtonIcon = document.createElement("img")
+        deleteButtonIcon.classList.add("img-icon")
+        deleteButtonIcon.alt = "Bin button"
+        deleteButtonIcon.src = binIcon
+        deleteButton.appendChild(deleteButtonIcon)
+
+        this.#projectBody = document.createElement("div")
+        this.#projectBody.classList.add("project-body")
+        this.#rootContainer.appendChild(this.#projectBody)
+
+        const projectFooter = document.createElement("div")
+        projectFooter.classList.add("project-footer")
+        this.#rootContainer.appendChild(projectFooter)
+
+        const addTodoItemButton = document.createElement("button")
+        addTodoItemButton.classList.add("add-todo-item-btn")
+        projectFooter.appendChild(addTodoItemButton)
+
+        const addTodoItemButtonIcon = document.createElement("img")
+        addTodoItemButtonIcon.classList.add("add-todo-item-icon")
+        addTodoItemButtonIcon.alt = "Add todo item icon"
+        addTodoItemButtonIcon.src = addIcon
+        addTodoItemButton.appendChild(addTodoItemButtonIcon)
+    }
+
+    appendTo(domElement) {
+        domElement.appendChild(this.#rootContainer)
+    }
+
+    addTask(task) {
+        this.#projectBody.appendChild(task)
+    }
+}
+
+export { TodoProjectDomElement }

@@ -1,0 +1,43 @@
+.project {
+    width: calc(var(--todo-item-width) + var(--todo-item-gap) * 2);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--charcoal-dark);
+    border-radius: 25px;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: var(--todo-item-gap);
+}
+
+.project-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--todo-item-gap);
+    align-items: center;
+    justify-content: center;
+}
+
+.project-footer {
+    display: flex;
+    justify-content: center;
+    padding: var(--todo-item-gap);
+}
+
+.add-todo-item-icon {
+    width: var(--todo-item-width);
+    height: calc(var(--todo-item-width) * 2/3);
+    padding: 50px;
+
+    border-style: dashed;
+    border-color: skyblue;
+    border-width: 15px;
+    border-radius: 25px;
+}
+
+.add-todo-item-icon:hover {
+    opacity: 0.5;
+}

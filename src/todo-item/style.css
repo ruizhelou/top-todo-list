@@ -1,33 +1,7 @@
-:root {
-  --content-padding: 8px;
-  --charcoal: #36454F;
-  --charcoal-dark: #333333;
-  --charcoal-light: #666666;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('../fonts/Roboto-VariableFont_wdth,wght.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-}
-
-* {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-
-    /* border-color: red;
-    border-width: 1px;
-    border-style: solid; */
-}
-
-.container {
+.todo-item-container {
     display: flex;
     flex-direction: column;
-    width: 340px;
+    width: var(--todo-item-width);
     word-break: break-all;
     background-color: var(--charcoal-light);
     border-radius: 15px;
@@ -38,41 +12,6 @@
     flex-direction: column;
     gap: 15px;
     padding: 15px;
-}
-
-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-style: none;
-    background: none;
-}
-
-button:hover {
-    cursor: pointer;
-}
-
-.card-header .img-icon:hover {
-    box-shadow: 0px 0px 10px white;
-}
-
-textarea {
-    padding: var(--content-padding);
-    width: 100%;
-    field-sizing: content;
-    resize: none;
-    border: none;
-    border-radius: 15px;
-}
-
-textarea:hover {
-    box-shadow: 0px 0px 10px white;
-}
-
-.img-icon {
-    width: 35px;
-    padding: var(--content-padding);
-    border-radius: 50%;
 }
 
 .card-item {
@@ -165,10 +104,6 @@ fieldset {
     width: 25px;
 }
 
-.card-add-subtask-btn .img-icon:hover {
-    box-shadow: 0px 0px 10px white;
-}
-
 .subtask-item {
     display: flex;
     align-items: center;
@@ -194,32 +129,23 @@ fieldset {
     width: 25px;
 }
 
-.subtask-item .img-icon:hover {
-    box-shadow: 0px 0px 10px white;
-}
-
 /* =================== OUTSIDE CONTAINER =================== */
 
 .card-collapse-btn {
-    background-color: var(--charcoal-dark);
+    background-color: darkgray;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
     padding: 2px;
 }
 
 .card-collapse-btn:hover {
-    filter: brightness(120%)
+    filter: brightness(120%);
 }
 
 .card-collapse-btn > .img-icon {
     background-color: none;
+    box-shadow: none;
     border: none;
     width: 20px;
     padding: 0px;
-}
-
-.rotated {
-    transform: rotate(0deg);
-    /* Add smooth transition */
-    transition: transform 0.2s ease-in-out;
 }

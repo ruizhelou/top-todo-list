@@ -1,0 +1,81 @@
+:root {
+  --content-padding: 6px;
+  --todo-item-width: 340px;
+  --charcoal-complementary: #36454F;
+  --charcoal: #4A4A4A;
+  --charcoal-dark: #333333;
+  --charcoal-light: #666666;
+  --light-shadow: 0px 0px 10px white;
+  --todo-item-gap: 25px;
+}
+
+body {
+    background-color: var(--charcoal-complementary);
+}
+
+.projects-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--todo-item-gap);
+    padding: var(--todo-item-gap);
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./fonts/Roboto-VariableFont_wdth,wght.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+
+    /* border-color: red;
+    border-style: solid;
+    border-width: 1px; */
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-style: none;
+    background: none;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+textarea {
+    padding: 6px 10px 6px 10px;
+    width: 100%;
+    field-sizing: content;
+    resize: none;
+    border: none;
+    border-radius: 15px;
+}
+
+textarea:hover {
+    box-shadow: var(--light-shadow);
+}
+
+.img-icon {
+    width: 35px;
+    padding: var(--content-padding);
+    border-radius: 50%;
+}
+
+.img-icon:hover {
+    box-shadow: var(--light-shadow);
+}
+
+.rotated {
+    transform: rotate(0deg);
+    /* Add smooth transition */
+    transition: transform 0.2s ease-in-out;
+}
