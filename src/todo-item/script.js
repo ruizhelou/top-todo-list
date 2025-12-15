@@ -183,7 +183,7 @@ class TodoItemDomElement {
 
         const dueDateLabel = document.createElement("label")
         dueDateLabel.for = "due-date"
-        dueDateLabel.textContent = "Due date:"
+        dueDateLabel.textContent = "Due by:"
         this.#dueDateContainer.appendChild(dueDateLabel)
 
         const dueDateInput = document.createElement("input")
