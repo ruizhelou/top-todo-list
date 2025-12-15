@@ -1,6 +1,7 @@
 :root {
   --content-padding: 6px;
   --todo-item-width: 340px;
+  --project-width: calc(var(--todo-item-width) + var(--todo-item-gap) * 2);
   --charcoal-complementary: #36454F;
   --charcoal: #4A4A4A;
   --charcoal-dark: #333333;
@@ -13,7 +14,7 @@ body {
     background-color: var(--charcoal-complementary);
 }
 
-.projects-container {
+.project-container {
     display: flex;
     flex-wrap: wrap;
     gap: var(--todo-item-gap);

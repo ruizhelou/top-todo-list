@@ -1,0 +1,14 @@
+.add-project-icon {
+    width: var( --project-width);
+    height: calc(var( --project-width) * 2/3);
+    padding: 50px;
+
+    border-style: dashed;
+    border-color: skyblue;
+    border-width: 15px;
+    border-radius: 25px;
+}
+
+.add-project-icon:hover {
+    opacity: 0.5;
+}
