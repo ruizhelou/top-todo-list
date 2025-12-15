@@ -7,13 +7,18 @@ import addIcon from "../icons/add-symbol.svg"
 import minusIcon from "../icons/minus-symbol.svg"
 import expandUpIcon from "../icons/expand-up.svg"
 
-class TodoItem {
+class Task {
+    #id
     #checked = false
     #title
     #description
     #dueDate
     #priority
     #subtasks = []
+
+    constructor() {
+        this.#id = crypto.randomUUID()
+    }
 
     get checked() {
         return this.#checked
@@ -66,7 +71,7 @@ class TodoItem {
         this.#subtasks.push(subtask)
     }
     removeSubtask(subtaskId) {
-        this.#subtasks.filter(subtask => subtask.id !== subtaskId);
+        this.#subtasks = this.#subtasks.filter(subtask => subtask.id !== subtaskId);
     }
     get subtasksLength() {
         return this.#subtasks.length
@@ -101,8 +106,8 @@ class Subtask {
     }
 }
 
-class TodoItemDomElement {
-    #todoItem;
+class TaskDomElement {
+    #task;
 
     #rootContainer
     #todoItemCard
@@ -119,7 +124,7 @@ class TodoItemDomElement {
     #isCollapsed = false
 
     constructor() {
-        this.#todoItem = new TodoItem();
+        this.#task = new Task();
 
         this.#rootContainer = document.createElement("div")
         this.#rootContainer.classList.add("todo-item-container")
@@ -139,8 +144,8 @@ class TodoItemDomElement {
         this.#checkButton = document.createElement("button")
         this.#checkButton.classList.add("card-complete-btn")
         this.#checkButton.addEventListener("click", event => {
-            this.#todoItem.checked = !this.#todoItem.checked
-            if(this.#todoItem.checked) {
+            this.#task.checked = !this.#task.checked
+            if(this.#task.checked) {
                 this.checkTodoItem()
             } else {
                 this.uncheckTodoItem()
@@ -158,7 +163,7 @@ class TodoItemDomElement {
         cardTitle.id = "card-title"
         cardTitle.name = "card-title"
         cardTitle.placeholder = "Title..."
-        cardTitle.addEventListener("input", event => this.#todoItem.title = event.target.value)
+        cardTitle.addEventListener("input", event => this.#task.title = event.target.value)
         headerLeft.appendChild(cardTitle)
 
         const headerRight = document.createElement("div")
@@ -175,14 +180,14 @@ class TodoItemDomElement {
         priorityButtonIcon.alt = "Priority button"
         priorityButton.appendChild(priorityButtonIcon)
         priorityButton.addEventListener("click", event => {
-            this.#todoItem.incrementPriority()
-            if(this.#todoItem.priority === undefined) {
+            this.#task.incrementPriority()
+            if(this.#task.priority === undefined) {
                 priorityButtonIcon.style.backgroundColor = 'darkgray'
-            } else if (this.#todoItem.priority === 'low') {
+            } else if (this.#task.priority === 'low') {
                 priorityButtonIcon.style.backgroundColor = 'gold'
-            } else if (this.#todoItem.priority === 'mid') {
+            } else if (this.#task.priority === 'mid') {
                 priorityButtonIcon.style.backgroundColor = 'orange'
-            } else if (this.#todoItem.priority === 'high') {
+            } else if (this.#task.priority === 'high') {
                 priorityButtonIcon.style.backgroundColor = 'red'
             }
         })
@@ -195,18 +200,18 @@ class TodoItemDomElement {
         })
         headerRight.appendChild(deleteButton)
 
-        const cardDeleteBtnIcon = document.createElement("img")
-        cardDeleteBtnIcon.classList.add("img-icon")
-        cardDeleteBtnIcon.src = binIcon
-        cardDeleteBtnIcon.alt = "Bin button"
-        deleteButton.appendChild(cardDeleteBtnIcon)
+        const deleteButtonIcon = document.createElement("img")
+        deleteButtonIcon.classList.add("img-icon")
+        deleteButtonIcon.src = binIcon
+        deleteButtonIcon.alt = "Bin button"
+        deleteButton.appendChild(deleteButtonIcon)
 
         this.#cardDescription = document.createElement("textarea")
         this.#cardDescription.id = "card-description"
         this.#cardDescription.name = "card-description"
         this.#cardDescription.classList.add("card-item")
         this.#cardDescription.placeholder = "Summary..."
-        this.#cardDescription.addEventListener("input", event => this.#todoItem.description = event.target.value)
+        this.#cardDescription.addEventListener("input", event => this.#task.description = event.target.value)
         this.#todoItemCard.appendChild(this.#cardDescription)
 
         this.#dueDateContainer = document.createElement("div")
@@ -222,7 +227,7 @@ class TodoItemDomElement {
         dueDateInput.id = "due-date"
         dueDateInput.name = "due-date"
         dueDateInput.type = "datetime-local"
-        dueDateInput.addEventListener("change", event => this.#todoItem.dueDate = event.target.value)
+        dueDateInput.addEventListener("change", event => this.#task.dueDate = event.target.value)
         this.#dueDateContainer.appendChild(dueDateInput)
 
         this.#subtasks = document.createElement("div")
@@ -296,7 +301,7 @@ class TodoItemDomElement {
 
     addSubtask(event) {
         const subtask = new Subtask()
-        this.#todoItem.addSubtask(subtask)
+        this.#task.addSubtask(subtask)
 
         const subtaskItem = document.createElement("div")
         subtaskItem.classList.add("subtask-item")
@@ -308,19 +313,19 @@ class TodoItemDomElement {
 
         const subtaskCheckbox = document.createElement("input")
         subtaskCheckbox.type = "checkbox"
-        subtaskCheckbox.id = "subtaskCheckbox" + this.#todoItem.subtasksLength
-        subtaskCheckbox.name = "subtaskCheckbox" + this.#todoItem.subtasksLength
+        subtaskCheckbox.id = "subtaskCheckbox" + this.#task.subtasksLength
+        subtaskCheckbox.name = "subtaskCheckbox" + this.#task.subtasksLength
         subtaskCheckbox.addEventListener("change", event => subtask.toggleChecked())
         subtaskItemContainer.appendChild(subtaskCheckbox)
 
         const subtaskLabel = document.createElement("label")
-        subtaskLabel.setAttribute("for", "subtaskCheckbox" + this.#todoItem.subtasksLength)
+        subtaskLabel.setAttribute("for", "subtaskCheckbox" + this.#task.subtasksLength)
         subtaskItemContainer.appendChild(subtaskLabel)
 
         const subtaskInput = document.createElement("textarea")
         subtaskInput.classList.add("subtask-input")
-        subtaskInput.id = "subtaskTextarea" + this.#todoItem.subtasksLength
-        subtaskInput.name = "subtaskTextarea" + this.#todoItem.subtasksLength
+        subtaskInput.id = "subtaskTextarea" + this.#task.subtasksLength
+        subtaskInput.name = "subtaskTextarea" + this.#task.subtasksLength
         subtaskInput.placeholder = "Subtask..."
         subtaskInput.addEventListener("input", event => subtask.textContent = event.target.value)
         subtaskItemContainer.appendChild(subtaskInput)
@@ -328,7 +333,7 @@ class TodoItemDomElement {
         const deleteSubtaskButton = document.createElement("button")
         deleteSubtaskButton.classList.add("delete-subtask-btn")
         deleteSubtaskButton.addEventListener("click", event => {
-            this.#todoItem.removeSubtask(subtask.id)
+            this.#task.removeSubtask(subtask.id)
             this.#subtaskFieldset.removeChild(subtaskItem)
         })
         subtaskItem.appendChild(deleteSubtaskButton)
@@ -349,4 +354,4 @@ class TodoItemDomElement {
     }
 }
 
-export { TodoItemDomElement }
+export { TaskDomElement }

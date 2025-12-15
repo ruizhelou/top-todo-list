@@ -1,6 +1,6 @@
 import "./style.css";
 import addIcon from "../icons/add-symbol.svg"
-import { TodoProjectDomElement } from "../todo-project/script.js"
+import { ProjectDomElement } from "../todo-project/script.js"
 
 class ProjectContainer {
     #projects = []
@@ -29,8 +29,8 @@ class ProjectContainerDomElement {
         addProjectsButton.appendChild(addProjectsButtonIcon)
         addProjectsButton.addEventListener("click", event => {
             projectContainer.removeChild(addProjectsButton)
-            const todoProjectDomElement = new TodoProjectDomElement()
-            todoProjectDomElement.appendTo(projectContainer)
+            const projectDomElement = new ProjectDomElement()
+            projectDomElement.appendTo(projectContainer)
             projectContainer.appendChild(addProjectsButton)
         })
         projectContainer.appendChild(addProjectsButton)

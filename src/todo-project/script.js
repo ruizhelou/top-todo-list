@@ -1,11 +1,11 @@
 import "./style.css";
 import binIcon from "../icons/bin.svg"
 import addIcon from "../icons/add-symbol.svg"
-import { TodoItemDomElement } from "../todo-item/script.js"
+import { TaskDomElement } from "../todo-item/script.js"
 
 class TodoProject {
     #title
-    #todoItems = []
+    #tasks = []
 
     get title() {
         return this.#title
@@ -14,12 +14,12 @@ class TodoProject {
         this.#title = title
     }
 
-    addTodoItem(todoItem) {
-        this.#todoItems.push(todoItem)
+    addTask(task) {
+        this.#tasks.push(task)
     }
 }
 
-class TodoProjectDomElement {
+class ProjectDomElement {
     #todoProject
     #rootContainer
     #projectBody
@@ -66,9 +66,9 @@ class TodoProjectDomElement {
         const addTodoItemButton = document.createElement("button")
         addTodoItemButton.classList.add("add-todo-item-btn")
         addTodoItemButton.addEventListener("click", event => {
-            const todoItemDomElement = new TodoItemDomElement()
-            todoItemDomElement.appendTo(this.#projectBody)
-            this.#todoProject.addTodoItem(todoItemDomElement.todoItem)
+            const taskDomElement = new TaskDomElement()
+            taskDomElement.appendTo(this.#projectBody)
+            this.#todoProject.addTask(taskDomElement.todoItem)
         })
         projectFooter.appendChild(addTodoItemButton)
 
@@ -84,4 +84,4 @@ class TodoProjectDomElement {
     }
 }
 
-export { TodoProjectDomElement }
+export { ProjectDomElement }
