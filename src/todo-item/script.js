@@ -52,6 +52,7 @@ class TaskDomElement {
             } else {
                 this.uncheckTodoItem()
             }
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
         })
         headerLeft.appendChild(this.#checkButton)
 
@@ -73,7 +74,10 @@ class TaskDomElement {
         } else {
             cardTitle.value = this.#task.title
         }
-        cardTitle.addEventListener("input", event => this.#task.title = event.target.value)
+        cardTitle.addEventListener("input", event => {
+            this.#task.title = event.target.value
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
+        })
         headerLeft.appendChild(cardTitle)
 
         const headerRight = document.createElement("div")
@@ -100,6 +104,7 @@ class TaskDomElement {
             } else if (this.#task.priority === 'high') {
                 priorityButtonIcon.style.backgroundColor = 'red'
             }
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
         })
         if(this.#task.priority === undefined) {
             priorityButtonIcon.style.backgroundColor = 'darkgray'
@@ -117,6 +122,7 @@ class TaskDomElement {
             const parentNode = this.#rootContainer.parentNode
             parentNode.removeChild(this.#rootContainer)
             allProjects.removeTask(this.#task.id)
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
         })
         headerRight.appendChild(deleteButton)
 
@@ -135,7 +141,10 @@ class TaskDomElement {
         } else {
             this.#cardDescription.value = this.#task.description
         }
-        this.#cardDescription.addEventListener("input", event => this.#task.description = event.target.value)
+        this.#cardDescription.addEventListener("input", event => {
+            this.#task.description = event.target.value
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
+        })
         this.#todoItemCard.appendChild(this.#cardDescription)
 
         this.#dueDateContainer = document.createElement("div")
@@ -154,7 +163,10 @@ class TaskDomElement {
         if(this.#task.dueDate !== undefined) {
             dueDateInput.value = this.#task.dueDate
         }
-        dueDateInput.addEventListener("change", event => this.#task.dueDate = event.target.value)
+        dueDateInput.addEventListener("change", event => {
+            this.#task.dueDate = event.target.value
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
+        })
         this.#dueDateContainer.appendChild(dueDateInput)
 
         // SUBTASK
@@ -241,6 +253,7 @@ class TaskDomElement {
         } else {
             subtask = existingSubtask
         }
+        localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
 
         const subtaskItem = document.createElement("div")
         subtaskItem.classList.add("subtask-item")
@@ -257,6 +270,7 @@ class TaskDomElement {
         subtaskCheckbox.addEventListener("change", event => subtask.toggleChecked())
         if(subtask.checked) {
             subtaskCheckbox.checked = subtask.checked
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
         }
         subtaskItemContainer.appendChild(subtaskCheckbox)
 
@@ -273,7 +287,10 @@ class TaskDomElement {
         } else {
             subtaskInput.value = subtask.textContent
         }
-        subtaskInput.addEventListener("input", event => subtask.textContent = event.target.value)
+        subtaskInput.addEventListener("input", event => {
+            subtask.textContent = event.target.value
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
+        })
         subtaskItemContainer.appendChild(subtaskInput)
 
         const deleteSubtaskButton = document.createElement("button")
@@ -281,6 +298,7 @@ class TaskDomElement {
         deleteSubtaskButton.addEventListener("click", event => {
             this.#task.removeSubtask(subtask.id)
             this.#subtaskFieldset.removeChild(subtaskItem)
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
         })
         subtaskItem.appendChild(deleteSubtaskButton)
 

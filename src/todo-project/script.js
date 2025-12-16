@@ -28,7 +28,10 @@ class ProjectDomElement {
         } else {
             projectTitle.value = project.title
         }
-        projectTitle.addEventListener("input", event => this.project.title = event.target.value)
+        projectTitle.addEventListener("input", event => {
+            this.project.title = event.target.value
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
+        })
         projectHeader.appendChild(projectTitle)
 
         const deleteButton = document.createElement("button")
@@ -37,6 +40,7 @@ class ProjectDomElement {
             const parentNode = this.#rootContainer.parentNode
             parentNode.removeChild(this.#rootContainer)
             allProjects.removeProject(project.id)
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
         })
         projectHeader.appendChild(deleteButton)
 
@@ -61,6 +65,7 @@ class ProjectDomElement {
             project.addTask(task)
             const taskDomElement = new TaskDomElement(task)
             taskDomElement.appendTo(this.#projectBody)
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
         })
         for(let existingTask of project.tasks) {
             const taskDomElement = new TaskDomElement(existingTask)

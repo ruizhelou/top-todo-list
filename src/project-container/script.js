@@ -29,6 +29,7 @@ class ProjectContainerDomElement {
             projectDomElement.appendTo(this.#projectContainer)
             this.#projectContainer.removeChild(this.#addProjectsButton)
             this.#projectContainer.appendChild(this.#addProjectsButton)
+            localStorage.setItem("allProjects", JSON.stringify(allProjects.projects))
         })
         this.#projectContainer.appendChild(this.#addProjectsButton)
     }
