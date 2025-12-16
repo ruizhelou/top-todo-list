@@ -39,6 +39,9 @@ class Project {
         this.#id = crypto.randomUUID()
     }
 
+    set id(id) {
+        this.#id=id
+    }
     get id() {
         return this.#id
     }
@@ -87,6 +90,9 @@ class Task {
 
     get id() {
         return this.#id;
+    }
+    set id(id) {
+        this.#id=id
     }
 
     get checked() {
@@ -174,9 +180,15 @@ class Subtask {
     get id() {
         return this.#id
     }
+    set id(id) {
+        this.#id=id
+    }
 
     get checked() {
         return this.#checked
+    }
+    set checked(checked) {
+        this.#checked = checked
     }
     toggleChecked() {
         this.#checked = !this.#checked

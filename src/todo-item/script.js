@@ -58,7 +58,7 @@ class TaskDomElement {
         this.#checkButtonIcon = document.createElement("img")
         this.#checkButtonIcon.classList.add("img-icon")
         this.#checkButtonIcon.alt="Complete button"
-        if(task.checked) {
+        if(this.#task.checked) {
             this.checkTodoItem()
         } else {
             this.uncheckTodoItem()
@@ -68,10 +68,10 @@ class TaskDomElement {
         const cardTitle = document.createElement("textarea")
         cardTitle.id = "card-title"
         cardTitle.name = "card-title"
-        if(task.title === undefined) {
+        if(this.#task.title === undefined) {
             cardTitle.placeholder = "Title..."
         } else {
-            cardTitle.value = task.title
+            cardTitle.value = this.#task.title
         }
         cardTitle.addEventListener("input", event => this.#task.title = event.target.value)
         headerLeft.appendChild(cardTitle)
@@ -130,10 +130,10 @@ class TaskDomElement {
         this.#cardDescription.id = "card-description"
         this.#cardDescription.name = "card-description"
         this.#cardDescription.classList.add("card-item")
-        if(task.description === undefined) {
+        if(this.#task.description === undefined) {
             this.#cardDescription.placeholder = "Summary..."
         } else {
-            this.#cardDescription.value = task.description
+            this.#cardDescription.value = this.#task.description
         }
         this.#cardDescription.addEventListener("input", event => this.#task.description = event.target.value)
         this.#todoItemCard.appendChild(this.#cardDescription)
@@ -234,8 +234,13 @@ class TaskDomElement {
     }
 
     addSubtask(existingSubtask) {
-        const subtask = existingSubtask === undefined ? new Subtask() : existingSubtask
-        this.#task.addSubtask(subtask)
+        let subtask
+        if(existingSubtask === undefined) {
+            subtask = new Subtask()
+            this.#task.addSubtask(subtask)
+        } else {
+            subtask = existingSubtask
+        }
 
         const subtaskItem = document.createElement("div")
         subtaskItem.classList.add("subtask-item")
@@ -266,7 +271,7 @@ class TaskDomElement {
         if(subtask.textContent === undefined) {
             subtaskInput.placeholder = "Subtask..."
         } else {
-            subtaskInput.placeholder = subtask.textContent
+            subtaskInput.value = subtask.textContent
         }
         subtaskInput.addEventListener("input", event => subtask.textContent = event.target.value)
         subtaskItemContainer.appendChild(subtaskInput)

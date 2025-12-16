@@ -62,6 +62,11 @@ class ProjectDomElement {
             const taskDomElement = new TaskDomElement(task)
             taskDomElement.appendTo(this.#projectBody)
         })
+        for(let existingTask of project.tasks) {
+            const taskDomElement = new TaskDomElement(existingTask)
+            taskDomElement.appendTo(this.#projectBody)
+            console.log(existingTask)
+        }
         projectFooter.appendChild(addTodoItemButton)
 
         const addTodoItemButtonIcon = document.createElement("img")
