@@ -62,6 +62,14 @@ class Project {
     findTask(taskId) {
         return this.#tasks.find(task => task.id === taskId);
     }
+
+    toJSON() {
+        return {
+            id: this.#id,
+            title: this.#title,
+            tasks: this.#tasks
+        };
+    }
 }
 
 class Task {
@@ -140,6 +148,18 @@ class Task {
     findSubtask(subtaskId) {
         return this.#subtasks.find(subtask => subtask.id === subtaskId)
     }
+
+    toJSON() {
+        return {
+            id: this.#id,
+            checked: this.#checked,
+            title: this.#title,
+            description: this.#description,
+            dueDate: this.#dueDate,
+            priority: this.#priority,
+            subtasks: this.#subtasks
+        };
+    }
 }
 
 class Subtask {
@@ -167,6 +187,14 @@ class Subtask {
     }
     set textContent(textContent) {
         this.#textContent = textContent
+    }
+
+    toJSON() {
+        return {
+            id: this.#id,
+            checked: this.#checked,
+            textContent: this.#textContent,
+        };
     }
 }
 

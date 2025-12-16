@@ -7,6 +7,7 @@ const projectContainerDomElement = new ProjectContainerDomElement()
 const log = document.createElement("button")
 log.textContent = "log"
 log.addEventListener("click", event => {
-    console.log(allProjects.projects)
+    const json = JSON.stringify(allProjects)
+    console.log(json)
 })
 document.querySelector("body").appendChild(log)
