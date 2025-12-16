@@ -3,24 +3,26 @@ import addIcon from "../icons/add-symbol.svg"
 import { ProjectDomElement } from "../todo-project/script.js"
 
 class ProjectContainer {
-    #projects = []
+    #allProjects = []
     
     addProject(project) {
-        this.#projects.push(project)
+        this.#allProjects.push(project)
     }
     removeProject(projectId) {
-        this.#projects = this.#projects.filter(project => project.id !== projectId);
+        this.#allProjects = this.#allProjects.filter(project => project.id !== projectId);
     }
 
-    // For debugging
-    logProjects() {
-        console.log(this.#projects)
+    get allProjects() {
+        return this.#allProjects
     }
 }
 
 class ProjectContainerDomElement {
+    #allProjects
 
     constructor() {
+        this.#allProjects = new ProjectContainer()
+        
         const body = document.querySelector("body")
 
         const projectContainer = document.createElement("div")
@@ -36,12 +38,19 @@ class ProjectContainerDomElement {
         addProjectsButton.classList.add("add-project-btn")
         addProjectsButton.appendChild(addProjectsButtonIcon)
         addProjectsButton.addEventListener("click", event => {
-            projectContainer.removeChild(addProjectsButton)
             const projectDomElement = new ProjectDomElement()
             projectDomElement.appendTo(projectContainer)
+            projectContainer.removeChild(addProjectsButton)
             projectContainer.appendChild(addProjectsButton)
+
+            this.#allProjects.addProject(projectDomElement.project)
+            projectDomElement.allProjects = this.#allProjects
         })
         projectContainer.appendChild(addProjectsButton)
+    }
+
+    get allProjects() {
+        return this.#allProjects
     }
 }
 

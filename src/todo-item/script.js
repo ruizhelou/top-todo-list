@@ -8,6 +8,8 @@ import minusIcon from "../icons/minus-symbol.svg"
 import expandUpIcon from "../icons/expand-up.svg"
 
 class Task {
+    #project
+
     #id
     #checked = false
     #title
@@ -18,6 +20,13 @@ class Task {
 
     constructor() {
         this.#id = crypto.randomUUID()
+    }
+
+    get project() {
+        return this.#project
+    }
+    set project(project) {
+        this.#project = project
     }
 
     get id() {
@@ -80,12 +89,21 @@ class Task {
 }
 
 class Subtask {
+    #task
+
     #id
     #checked = false
     #textContent
 
     constructor() {
         this.#id = crypto.randomUUID()
+    }
+
+    get task() {
+        return this.#task
+    }
+    set task(task) {
+        this.#task = task
     }
 
     get id() {
@@ -198,6 +216,8 @@ class TaskDomElement {
         deleteButton.addEventListener("click", event => {
             const parentNode = this.#rootContainer.parentNode
             parentNode.removeChild(this.#rootContainer)
+
+            this.#task.project.removeTask(this.#task.id)
         })
         headerRight.appendChild(deleteButton)
 
@@ -302,7 +322,9 @@ class TaskDomElement {
 
     addSubtask(event) {
         const subtask = new Subtask()
+        
         this.#task.addSubtask(subtask)
+        subtask.task = this.#task
 
         const subtaskItem = document.createElement("div")
         subtaskItem.classList.add("subtask-item")
@@ -352,6 +374,10 @@ class TaskDomElement {
 
     get rootContainer() {
         return this.#rootContainer
+    }
+
+    get task() {
+        return this.#task
     }
 }
 

@@ -4,12 +4,21 @@ import addIcon from "../icons/add-symbol.svg"
 import { TaskDomElement } from "../todo-item/script.js"
 
 class Project {
+    #allProjects
+
     #id
     #title
     #tasks = []
 
     constructor() {
         this.#id = crypto.randomUUID();
+    }
+
+    get allProjects() {
+        return this.#allProjects
+    }
+    set allProjects(allProjects) {
+        this.#allProjects = allProjects
     }
 
     get id() {
@@ -32,12 +41,13 @@ class Project {
 }
 
 class ProjectDomElement {
-    #todoProject
+    #project
+
     #rootContainer
     #projectBody
 
     constructor() {
-        this.#todoProject = new Project()
+        this.#project = new Project()
 
         this.#rootContainer = document.createElement("div")
         this.#rootContainer.classList.add("project")
@@ -50,7 +60,7 @@ class ProjectDomElement {
         projectTitle.name = "project-title"
         projectTitle.id = "project-title"
         projectTitle.placeholder = "Project title..."
-        projectTitle.addEventListener("input", event => this.#todoProject.title = event.target.value)
+        projectTitle.addEventListener("input", event => this.project.title = event.target.value)
         projectHeader.appendChild(projectTitle)
 
         const deleteButton = document.createElement("button")
@@ -58,6 +68,8 @@ class ProjectDomElement {
         deleteButton.addEventListener("click", event => {
             const parentNode = this.#rootContainer.parentNode
             parentNode.removeChild(this.#rootContainer)
+
+            this.#project.allProjects.removeProject(this.#project.id)
         })
         projectHeader.appendChild(deleteButton)
 
@@ -80,7 +92,9 @@ class ProjectDomElement {
         addTodoItemButton.addEventListener("click", event => {
             const taskDomElement = new TaskDomElement()
             taskDomElement.appendTo(this.#projectBody)
-            this.#todoProject.addTask(taskDomElement.todoItem)
+
+            this.#project.addTask(taskDomElement.task)
+            taskDomElement.task.project = this.#project
         })
         projectFooter.appendChild(addTodoItemButton)
 
@@ -93,6 +107,14 @@ class ProjectDomElement {
 
     appendTo(domElement) {
         domElement.appendChild(this.#rootContainer)
+    }
+
+    get project() {
+        return this.#project
+    }
+
+    set allProjects(allProjects) {
+        this.#project.allProjects = allProjects
     }
 }
 
