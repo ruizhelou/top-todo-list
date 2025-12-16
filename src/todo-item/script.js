@@ -6,127 +6,10 @@ import binIcon from "../icons/bin.svg"
 import addIcon from "../icons/add-symbol.svg"
 import minusIcon from "../icons/minus-symbol.svg"
 import expandUpIcon from "../icons/expand-up.svg"
-
-class Task {
-    #project
-
-    #id
-    #checked = false
-    #title
-    #description
-    #dueDate
-    #priority
-    #subtasks = []
-
-    constructor() {
-        this.#id = crypto.randomUUID()
-    }
-
-    get project() {
-        return this.#project
-    }
-    set project(project) {
-        this.#project = project
-    }
-
-    get id() {
-        return this.#id;
-    }
-
-    get checked() {
-        return this.#checked
-    }
-
-    set checked(checked) {
-        this.#checked = checked
-    }
-    
-    get title() {
-        return this.#title
-    }
-    set title(title) {
-        this.#title = title
-    }
-
-    get description() {
-        return this.#description
-    }
-    set description(description) {
-        this.#description = description
-    }
-
-    get dueDate() {
-        return this.#dueDate
-    }
-    set dueDate(dueDate) {
-        this.#dueDate = dueDate
-    }
-
-    get priority() {
-        return this.#priority
-    }
-    set priority(priority) {
-        this.#priority = priority
-    }
-    incrementPriority() {
-        if(this.#priority === undefined) {
-            this.#priority = 'low'
-        } else if(this.#priority === 'low') {
-            this.#priority = 'mid'
-        } else if(this.#priority === 'mid') {
-            this.#priority = 'high'
-        } else {
-            this.#priority = undefined
-        }
-    }
-
-    addSubtask(subtask) {
-        this.#subtasks.push(subtask)
-    }
-    removeSubtask(subtaskId) {
-        this.#subtasks = this.#subtasks.filter(subtask => subtask.id !== subtaskId);
-    }
-}
-
-class Subtask {
-    #task
-
-    #id
-    #checked = false
-    #textContent
-
-    constructor() {
-        this.#id = crypto.randomUUID()
-    }
-
-    get task() {
-        return this.#task
-    }
-    set task(task) {
-        this.#task = task
-    }
-
-    get id() {
-        return this.#id
-    }
-
-    get checked() {
-        return this.#checked
-    }
-    toggleChecked() {
-        this.#checked = !this.#checked
-    }
-
-    get textContent() {
-        return this.#textContent
-    }
-    set textContent(textContent) {
-        this.#textContent = textContent
-    }
-}
+import { allProjects, Project, Task, Subtask } from "../dom-tracker.js"
 
 class TaskDomElement {
-    #task;
+    #task
 
     #rootContainer
     #todoItemCard
@@ -142,8 +25,8 @@ class TaskDomElement {
     #cardCollapseButtonIcon
     #isCollapsed = false
 
-    constructor() {
-        this.#task = new Task();
+    constructor(task) {
+        this.#task = task
 
         this.#rootContainer = document.createElement("div")
         this.#rootContainer.classList.add("todo-item-container")
@@ -174,14 +57,22 @@ class TaskDomElement {
 
         this.#checkButtonIcon = document.createElement("img")
         this.#checkButtonIcon.classList.add("img-icon")
-        this.#checkButtonIcon.src=incompleteIcon
         this.#checkButtonIcon.alt="Complete button"
+        if(task.checked) {
+            this.checkTodoItem()
+        } else {
+            this.uncheckTodoItem()
+        }
         this.#checkButton.appendChild(this.#checkButtonIcon)
 
         const cardTitle = document.createElement("textarea")
         cardTitle.id = "card-title"
         cardTitle.name = "card-title"
-        cardTitle.placeholder = "Title..."
+        if(task.title === undefined) {
+            cardTitle.placeholder = "Title..."
+        } else {
+            cardTitle.value = task.title
+        }
         cardTitle.addEventListener("input", event => this.#task.title = event.target.value)
         headerLeft.appendChild(cardTitle)
 
@@ -210,14 +101,22 @@ class TaskDomElement {
                 priorityButtonIcon.style.backgroundColor = 'red'
             }
         })
+        if(this.#task.priority === undefined) {
+            priorityButtonIcon.style.backgroundColor = 'darkgray'
+        } else if (this.#task.priority === 'low') {
+            priorityButtonIcon.style.backgroundColor = 'gold'
+        } else if (this.#task.priority === 'mid') {
+            priorityButtonIcon.style.backgroundColor = 'orange'
+        } else if (this.#task.priority === 'high') {
+            priorityButtonIcon.style.backgroundColor = 'red'
+        }
 
         const deleteButton = document.createElement("button")
         deleteButton.classList.add("btn-widget", "delete-btn")
         deleteButton.addEventListener("click", event => {
             const parentNode = this.#rootContainer.parentNode
             parentNode.removeChild(this.#rootContainer)
-
-            this.#task.project.removeTask(this.#task.id)
+            allProjects.removeTask(this.#task.id)
         })
         headerRight.appendChild(deleteButton)
 
@@ -231,7 +130,11 @@ class TaskDomElement {
         this.#cardDescription.id = "card-description"
         this.#cardDescription.name = "card-description"
         this.#cardDescription.classList.add("card-item")
-        this.#cardDescription.placeholder = "Summary..."
+        if(task.description === undefined) {
+            this.#cardDescription.placeholder = "Summary..."
+        } else {
+            this.#cardDescription.value = task.description
+        }
         this.#cardDescription.addEventListener("input", event => this.#task.description = event.target.value)
         this.#todoItemCard.appendChild(this.#cardDescription)
 
@@ -248,8 +151,13 @@ class TaskDomElement {
         dueDateInput.id = "due-date"
         dueDateInput.name = "due-date"
         dueDateInput.type = "datetime-local"
+        if(this.#task.dueDate !== undefined) {
+            dueDateInput.value = this.#task.dueDate
+        }
         dueDateInput.addEventListener("change", event => this.#task.dueDate = event.target.value)
         this.#dueDateContainer.appendChild(dueDateInput)
+
+        // SUBTASK
 
         this.#subtasks = document.createElement("div")
         this.#subtasks.classList.add("subtasks", "card-item")
@@ -268,7 +176,12 @@ class TaskDomElement {
 
         const addSubtaskButton = document.createElement("button")
         addSubtaskButton.classList.add("card-add-subtask-btn")
-        addSubtaskButton.addEventListener("click", event => this.addSubtask(event))
+        addSubtaskButton.addEventListener("click", event => {
+            this.addSubtask()
+        })
+        for(let subtask of this.#task.subtasks) {
+            this.addSubtask(subtask)
+        }
         subtaskHeader.appendChild(addSubtaskButton)
 
         const addSubTaskButtonIcon = document.createElement("img")
@@ -320,11 +233,9 @@ class TaskDomElement {
         this.#cardCollapseButtonIcon.style.transform = 'rotate(0deg)';
     }
 
-    addSubtask(event) {
-        const subtask = new Subtask()
-        
+    addSubtask(existingSubtask) {
+        const subtask = existingSubtask === undefined ? new Subtask() : existingSubtask
         this.#task.addSubtask(subtask)
-        subtask.task = this.#task
 
         const subtaskItem = document.createElement("div")
         subtaskItem.classList.add("subtask-item")
@@ -339,6 +250,9 @@ class TaskDomElement {
         subtaskCheckbox.id = "subtaskCheckbox" + subtask.id
         subtaskCheckbox.name = "subtaskCheckbox" + subtask.id
         subtaskCheckbox.addEventListener("change", event => subtask.toggleChecked())
+        if(subtask.checked) {
+            subtaskCheckbox.checked = subtask.checked
+        }
         subtaskItemContainer.appendChild(subtaskCheckbox)
 
         const subtaskLabel = document.createElement("label")
@@ -349,7 +263,11 @@ class TaskDomElement {
         subtaskInput.classList.add("subtask-input")
         subtaskInput.id = "subtaskTextarea" + subtask.id
         subtaskInput.name = "subtaskTextarea" + subtask.id
-        subtaskInput.placeholder = "Subtask..."
+        if(subtask.textContent === undefined) {
+            subtaskInput.placeholder = "Subtask..."
+        } else {
+            subtaskInput.placeholder = subtask.textContent
+        }
         subtaskInput.addEventListener("input", event => subtask.textContent = event.target.value)
         subtaskItemContainer.appendChild(subtaskInput)
 

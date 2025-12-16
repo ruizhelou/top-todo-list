@@ -2,43 +2,7 @@ import "./style.css";
 import binIcon from "../icons/bin.svg"
 import addIcon from "../icons/add-symbol.svg"
 import { TaskDomElement } from "../todo-item/script.js"
-
-class Project {
-    #allProjects
-
-    #id
-    #title
-    #tasks = []
-
-    constructor() {
-        this.#id = crypto.randomUUID();
-    }
-
-    get allProjects() {
-        return this.#allProjects
-    }
-    set allProjects(allProjects) {
-        this.#allProjects = allProjects
-    }
-
-    get id() {
-        return this.#id
-    }
-
-    get title() {
-        return this.#title
-    }
-    set title(title) {
-        this.#title = title
-    }
-
-    addTask(task) {
-        this.#tasks.push(task)
-    }
-    removeTask(taskId) {
-        this.#tasks = this.#tasks.filter(task => task.id !== taskId);
-    }
-}
+import { allProjects, Project, Task, Subtask } from "../dom-tracker.js"
 
 class ProjectDomElement {
     #project
@@ -46,8 +10,8 @@ class ProjectDomElement {
     #rootContainer
     #projectBody
 
-    constructor() {
-        this.#project = new Project()
+    constructor(project) {
+        this.#project = project
 
         this.#rootContainer = document.createElement("div")
         this.#rootContainer.classList.add("project")
@@ -59,7 +23,11 @@ class ProjectDomElement {
         const projectTitle = document.createElement("textarea")
         projectTitle.name = "project-title"
         projectTitle.id = "project-title"
-        projectTitle.placeholder = "Project title..."
+        if(project.title === undefined) {
+            projectTitle.placeholder = "Project title..."
+        } else {
+            projectTitle.value = project.title
+        }
         projectTitle.addEventListener("input", event => this.project.title = event.target.value)
         projectHeader.appendChild(projectTitle)
 
@@ -68,8 +36,7 @@ class ProjectDomElement {
         deleteButton.addEventListener("click", event => {
             const parentNode = this.#rootContainer.parentNode
             parentNode.removeChild(this.#rootContainer)
-
-            this.#project.allProjects.removeProject(this.#project.id)
+            allProjects.removeProject(project.id)
         })
         projectHeader.appendChild(deleteButton)
 
@@ -90,11 +57,10 @@ class ProjectDomElement {
         const addTodoItemButton = document.createElement("button")
         addTodoItemButton.classList.add("add-todo-item-btn")
         addTodoItemButton.addEventListener("click", event => {
-            const taskDomElement = new TaskDomElement()
+            const task = new Task()
+            project.addTask(task)
+            const taskDomElement = new TaskDomElement(task)
             taskDomElement.appendTo(this.#projectBody)
-
-            this.#project.addTask(taskDomElement.task)
-            taskDomElement.task.project = this.#project
         })
         projectFooter.appendChild(addTodoItemButton)
 
